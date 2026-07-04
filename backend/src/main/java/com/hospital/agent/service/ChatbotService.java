@@ -34,13 +34,13 @@ public class ChatbotService {
 
     private static final Set<String> SCOPE_KEYWORDS = Set.of(
             "hospital", "doctor", "cardiologist", "pediatrician", "surgeon", "physician",
-            "medicine", "emergency", "visiting", "hours", "contact", "phone", "number",
+            "medicine", "emergency", "visiting", "visitor", "visitors", "visit", "visits", "hours", "contact", "phone", "number",
             "reception", "ambulance", "address", "location", "floor", "wing", "room",
             "cabin", "department", "radiology", "cardiology", "pediatrics", "orthopedics",
             "billing", "discharge", "parking", "pharmacy", "opd", "schedule", "timings",
             "available", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
             "help", "hi", "hello", "appointment", "consultation", "test", "mri", "xray",
-            "who", "where", "what", "how", "when", "list"
+            "who", "where", "what", "how", "when", "list", "child", "children", "kid", "kids", "allowed", "allow", "policy", "policies", "rule", "rules", "can"
     );
 
     @Autowired
@@ -201,13 +201,7 @@ public class ChatbotService {
     }
 
     private boolean isInScope(String message) {
-        String[] tokens = message.split("[^a-zA-Z0-9]+");
-        for (String token : tokens) {
-            if (SCOPE_KEYWORDS.contains(token)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     private AiService getAiService() {
