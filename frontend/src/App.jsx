@@ -14,8 +14,9 @@ import ChatPage from './pages/ChatPage';
 function Layout() {
   const location = useLocation();
   
-  // Hide the floating widget if the user is already on the dedicated full chat page
+  // Hide the floating widget and footer if the user is already on the dedicated full chat page
   const showFloatingWidget = location.pathname !== '/chat';
+  const showFooter = location.pathname !== '/chat';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -30,7 +31,7 @@ function Layout() {
           <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </main>
-      <Footer />
+      {showFooter && <Footer />}
       {showFloatingWidget && <ChatbotWidget />}
     </div>
   );
