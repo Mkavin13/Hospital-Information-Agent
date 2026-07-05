@@ -32,7 +32,7 @@ public class AivenSeeder {
             String password = scanner.nextLine().trim();
 
             System.out.println("\nConnecting to Aiven MySQL database...");
-            String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/defaultdb?sslMode=TRUST&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+            String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/defaultdb?allowPublicKeyRetrieval=true&allowMultiQueries=true";
             
             // Register MySQL Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
