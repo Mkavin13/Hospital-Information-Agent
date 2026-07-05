@@ -36,3 +36,5 @@ yarn-error.log*
 *.log
 tmp/
 temp/
+**/.env.properties
+
