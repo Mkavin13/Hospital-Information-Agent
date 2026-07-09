@@ -10,8 +10,8 @@ export default function FaqItem({ faq }) {
       padding: '1.25rem',
       cursor: 'pointer',
       borderLeft: isOpen ? '4px solid var(--primary)' : '1px solid var(--border-color)',
-      backgroundColor: '#ffffff',
-      transition: 'border var(--transition-fast)'
+      backgroundColor: isOpen ? 'var(--primary-light)' : 'var(--card-bg)',
+      transition: 'all var(--transition-fast)'
     }} onClick={() => setIsOpen(!isOpen)}>
       
       <div style={{
@@ -28,7 +28,7 @@ export default function FaqItem({ faq }) {
           </div>
         </div>
         <div>
-          {isOpen ? <ChevronUp size={18} color="var(--text-muted)" /> : <ChevronDown size={18} color="var(--text-muted)" />}
+          {isOpen ? <ChevronUp size={18} color="var(--text-secondary)" /> : <ChevronDown size={18} color="var(--text-muted)" />}
         </div>
       </div>
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
-  HeartPulse, 
   UserRound, 
   Building2, 
   HelpCircle, 
@@ -9,7 +8,11 @@ import {
   MessageSquareShare, 
   Search,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Activity,
+  UserCheck,
+  Cpu,
+  Clock
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -60,10 +63,33 @@ export default function HomePage() {
     }
   ];
 
+  const stats = [
+    {
+      label: "Operational Units",
+      val: "7 Departments",
+      icon: <Activity size={20} color="var(--primary)" />,
+    },
+    {
+      label: "Specialists Registered",
+      val: "25+ On-Duty",
+      icon: <UserCheck size={20} color="var(--secondary)" />,
+    },
+    {
+      label: "AI Chatbot System",
+      val: "24/7 Active",
+      icon: <Cpu size={20} color="var(--accent)" />,
+    },
+    {
+      label: "Average Response",
+      val: "~100ms Latency",
+      icon: <Clock size={20} color="var(--primary)" />,
+    }
+  ];
+
   return (
     <div className="animate-fade-in" style={{ 
       padding: '4rem 0 6rem 0',
-      background: 'radial-gradient(circle at 10% 20%, rgba(239, 246, 255, 0.5) 0%, rgba(255, 255, 255, 0) 80%)',
+      background: 'radial-gradient(circle at 10% 20%, var(--primary-light) 0%, transparent 80%)',
       minHeight: '100%'
     }}>
       
@@ -71,7 +97,7 @@ export default function HomePage() {
       <div style={{
         textAlign: 'center',
         maxWidth: '850px',
-        margin: '0 auto 4.5rem auto',
+        margin: '0 auto 3.5rem auto',
         padding: '0 1.5rem'
       }}>
         <div style={{ 
@@ -85,10 +111,10 @@ export default function HomePage() {
           fontSize: '0.85rem',
           fontWeight: 600,
           marginBottom: '1.5rem',
-          boxShadow: '0 4px 10px rgba(37, 99, 235, 0.05)',
+          boxShadow: '0 4px 10px rgba(59, 130, 246, 0.08)',
           border: '1px solid rgba(59, 130, 246, 0.15)'
         }}>
-          <Sparkles size={14} className="animate-pulse" />
+          <Sparkles size={14} />
           <span>Intelligent Patient Services Hub</span>
         </div>
         
@@ -99,7 +125,7 @@ export default function HomePage() {
           marginBottom: '1.25rem', 
           lineHeight: '1.15',
           letterSpacing: '-0.02em',
-          background: 'linear-gradient(135deg, #0f172a 30%, #2563eb 100%)',
+          background: 'linear-gradient(135deg, var(--text-primary) 30%, var(--primary) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent'
         }}>
@@ -107,7 +133,7 @@ export default function HomePage() {
         </h2>
         
         <p style={{ 
-          fontSize: '1.2rem', 
+          fontSize: '1.15rem', 
           color: 'var(--text-secondary)', 
           marginBottom: '2.5rem',
           lineHeight: '1.6',
@@ -136,9 +162,10 @@ export default function HomePage() {
               height: '62px',
               borderRadius: '31px',
               fontSize: '1.05rem',
-              border: '1.5px solid rgba(226, 232, 240, 0.8)',
+              border: '1.5px solid var(--border-color)',
               boxShadow: 'var(--shadow-md)',
-              background: '#ffffff',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
               transition: 'all 0.3s ease'
             }}
           />
@@ -172,15 +199,55 @@ export default function HomePage() {
         </form>
       </div>
 
+      {/* Statistics Section */}
+      <div className="container" style={{ marginBottom: '4rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1.5rem',
+          backgroundColor: 'var(--bg-surface)',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-md)',
+          padding: '1.5rem 2rem',
+          boxShadow: 'var(--shadow-sm)'
+        }}>
+          {stats.map((stat, idx) => (
+            <div key={idx} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              borderRight: idx < stats.length - 1 ? '1px solid var(--border-color)' : 'none',
+              paddingRight: '1rem'
+            }} className="stats-col">
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: 'var(--primary-light)',
+              }}>
+                {stat.icon}
+              </div>
+              <div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{stat.label}</p>
+                <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>{stat.val}</h4>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Navigation Cards Grid */}
       <div className="container">
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'flex-end', 
-          marginBottom: '2rem',
-          borderBottom: '1.5px solid rgba(226, 232, 240, 0.5)',
-          paddingBottom: '1rem'
+          marginBottom: '2.5rem',
+          borderBottom: '1px solid var(--border-color)',
+          paddingBottom: '1.25rem'
         }}>
           <div>
             <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
@@ -195,7 +262,10 @@ export default function HomePage() {
         <div className="grid grid-cols-3" style={{ gap: '2rem' }}>
           {navCards.map((card, idx) => (
             <div key={idx} className="card dashboard-card" style={{
-              minHeight: '260px'
+              minHeight: '260px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
             }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -208,7 +278,7 @@ export default function HomePage() {
                     borderRadius: '12px', 
                     background: 'var(--primary-light)',
                     border: '1px solid rgba(59, 130, 246, 0.15)',
-                    boxShadow: '0 4px 10px rgba(37, 99, 235, 0.05)'
+                    boxShadow: '0 4px 10px rgba(59, 130, 246, 0.05)'
                   }}>
                     {card.icon}
                   </div>
@@ -253,7 +323,6 @@ export default function HomePage() {
         .search-bar-wrapper input:focus {
           border-color: var(--primary) !important;
           box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15) !important;
-          transform: translateY(-1px);
         }
         .btn-search-submit:hover {
           background: var(--primary-hover) !important;
@@ -264,16 +333,29 @@ export default function HomePage() {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .dashboard-card:hover {
-          border-color: rgba(37, 99, 235, 0.25) !important;
+          border-color: rgba(59, 130, 246, 0.35) !important;
+          transform: translateY(-6px);
+          box-shadow: var(--shadow-lg) !important;
         }
         .dashboard-card:hover .card-btn {
-          background-color: var(--primary) !important;
+          background: var(--grad-primary) !important;
           color: white !important;
-          border-color: var(--primary) !important;
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+          border-color: transparent !important;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
         .dashboard-card:hover .arrow-icon {
           transform: translateX(4px);
+        }
+        @media (max-width: 768px) {
+          .stats-col {
+            border-right: none !important;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+          }
+          .stats-col:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+          }
         }
       `}</style>
     </div>

@@ -130,7 +130,7 @@ export default function DoctorsPage() {
                   fontWeight: 500,
                   borderRadius: '20px',
                   border: selectedDept === d ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                  backgroundColor: selectedDept === d ? 'var(--primary)' : '#ffffff',
+                  backgroundColor: selectedDept === d ? 'var(--primary)' : 'var(--card-bg)',
                   color: selectedDept === d ? '#ffffff' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'all var(--transition-fast)'

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { sendChatMessage } from '../services/api';
-import { MessageSquare, Send, Sparkles, AlertCircle, HelpCircle } from 'lucide-react';
+import { MessageSquare, Send, Sparkles, AlertCircle, HelpCircle, Bot, User } from 'lucide-react';
 
 export default function ChatPage() {
   const [searchParams] = useSearchParams();
@@ -94,12 +94,11 @@ export default function ChatPage() {
           </div>
           <div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>AI Assistant Workspace</h2>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Phase 1 Hybrid Context Chatbot (Gemini / Llama 3)</p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#e2e8f0', padding: '0.4rem 0.85rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 500 }}>
-          <span style={{ width: '8px', height: '8px', backgroundColor: '#22c55e', borderRadius: '50%' }}></span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', padding: '0.4rem 0.85rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
+          <span style={{ width: '8px', height: '8px', backgroundColor: '#22c55e', borderRadius: '50%' }} className="pulse-dot"></span>
           <span>Online Directory Mode</span>
         </div>
       </div>
@@ -110,57 +109,104 @@ export default function ChatPage() {
         gridTemplateColumns: '3fr 1fr',
         gap: '2rem',
         flex: 1,
-        minHeight: 0 // Crucial for overflow scroll to work in grid children
-      }}>
+        minHeight: 0
+      }} className="chat-grid-layout">
         
         {/* Chat Conversation Console */}
-        <div className="chat-container" style={{ height: '100%', borderRadius: 'var(--radius-lg)' }}>
+        <div className="chat-container" style={{ height: '100%', borderRadius: 'var(--radius-lg)', display: 'flex', flexDirection: 'column' }}>
           
           {/* Scrollable Message Box */}
           <div style={{
             flex: 1,
             padding: '1.5rem',
             overflowY: 'auto',
-            backgroundColor: '#f8fafc',
+            backgroundColor: 'var(--bg-main)',
             display: 'flex',
             flexDirection: 'column'
           }}>
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={msg.isBot ? "chat-bubble chat-bubble-bot" : "chat-bubble chat-bubble-user"}
                 style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.75rem',
                   alignSelf: msg.isBot ? 'flex-start' : 'flex-end',
-                  position: 'relative',
-                  marginBottom: '1rem'
+                  flexDirection: msg.isBot ? 'row' : 'row-reverse',
+                  marginBottom: '1rem',
+                  maxWidth: '85%'
                 }}
               >
-                <div>{msg.text}</div>
-                {msg.isBot && msg.source && (
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    fontSize: '0.65rem',
-                    color: 'var(--text-muted)',
-                    marginTop: '0.5rem',
-                    borderTop: '1px solid rgba(0,0,0,0.05)',
-                    paddingTop: '0.25rem',
-                    fontWeight: 500
-                  }}>
-                    <span>Intent: {msg.matchedIntent || 'general'}</span>
-                    <span>Source: {msg.source}</span>
+                {/* Avatar Icon */}
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: msg.isBot ? 'var(--primary-light)' : 'var(--primary)',
+                  color: msg.isBot ? 'var(--primary)' : 'var(--text-white)',
+                  border: '1px solid var(--border-color)',
+                  flexShrink: 0
+                }}>
+                  {msg.isBot ? <Bot size={18} /> : <User size={18} />}
+                </div>
+
+                {/* Message Bubble Container */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: msg.isBot ? 'flex-start' : 'flex-end' }}>
+                  <div
+                    className={msg.isBot ? "chat-bubble chat-bubble-bot" : "chat-bubble chat-bubble-user"}
+                    style={{
+                      margin: 0,
+                      boxShadow: 'var(--shadow-sm)'
+                    }}
+                  >
+                    <div>{msg.text}</div>
+                    {msg.isBot && msg.source && (
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.68rem',
+                        color: 'var(--text-muted)',
+                        marginTop: '0.5rem',
+                        borderTop: '1px solid var(--border-color)',
+                        paddingTop: '0.35rem',
+                        fontWeight: 600,
+                        gap: '1rem'
+                      }}>
+                        <span>Intent: {msg.matchedIntent || 'general'}</span>
+                        <span>Source: {msg.source}</span>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             ))}
 
             {isLoading && (
-              <div className="chat-bubble chat-bubble-bot" style={{ alignSelf: 'flex-start', padding: '0.85rem 1.1rem' }}>
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center', height: '14px' }}>
-                  <span className="dot" style={{ animationDelay: '0s' }}></span>
-                  <span className="dot" style={{ animationDelay: '0.2s' }}></span>
-                  <span className="dot" style={{ animationDelay: '0.4s' }}></span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', alignSelf: 'flex-start', marginBottom: '1rem' }}>
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'var(--primary-light)',
+                  color: 'var(--primary)',
+                  border: '1px solid var(--border-color)',
+                  flexShrink: 0
+                }}>
+                  <Bot size={18} />
+                </div>
+                <div className="chat-bubble chat-bubble-bot" style={{ margin: 0, padding: '0.85rem 1.1rem' }}>
+                  <div style={{ display: 'flex', gap: '4px', alignItems: 'center', height: '14px' }}>
+                    <span className="dot" style={{ animationDelay: '0s' }}></span>
+                    <span className="dot" style={{ animationDelay: '0.2s' }}></span>
+                    <span className="dot" style={{ animationDelay: '0.4s' }}></span>
+                  </div>
                 </div>
               </div>
             )}
@@ -173,11 +219,12 @@ export default function ChatPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
-              backgroundColor: '#fee2e2',
-              borderTop: '1px solid #fecaca',
+              backgroundColor: 'var(--accent-light)',
+              borderTop: '1px solid var(--border-color)',
               padding: '0.75rem 1.25rem',
-              color: '#b91c1c',
-              fontSize: '0.85rem'
+              color: 'var(--accent)',
+              fontSize: '0.85rem',
+              fontWeight: 500
             }}>
               <AlertCircle size={16} />
               <span>{errorMsg}</span>
@@ -188,7 +235,7 @@ export default function ChatPage() {
           <div style={{
             padding: '1rem 1.5rem',
             borderTop: '1px solid var(--border-color)',
-            backgroundColor: '#ffffff',
+            backgroundColor: 'var(--bg-surface)',
             display: 'flex',
             gap: '0.75rem',
             alignItems: 'center'
@@ -206,26 +253,21 @@ export default function ChatPage() {
                 borderRadius: '30px',
                 paddingLeft: '1.25rem',
                 height: '48px',
-                border: '1.5px solid var(--border-color)',
                 fontSize: '0.95rem'
               }}
             />
             <button
               onClick={() => handleSend()}
               disabled={isLoading || !inputValue.trim()}
+              className="btn btn-primary"
               style={{
                 height: '46px',
                 padding: '0 1.5rem',
                 borderRadius: '23px',
-                backgroundColor: (isLoading || !inputValue.trim()) ? 'var(--border-color)' : 'var(--primary)',
-                color: '#ffffff',
-                border: 'none',
-                cursor: (isLoading || !inputValue.trim()) ? 'default' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                fontWeight: 500,
-                transition: 'background-color 0.2s'
+                transition: 'all 0.2s'
               }}
             >
               <span>Send</span>
@@ -239,19 +281,19 @@ export default function ChatPage() {
           display: 'flex',
           flexDirection: 'column',
           gap: '1.5rem',
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--bg-surface)',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-lg)',
           padding: '1.5rem',
           height: '100%',
           overflowY: 'auto'
-        }}>
+        }} className="chat-suggestions-sidebar">
           <div>
             <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem', fontWeight: 700, marginBottom: '0.75rem' }}>
               <Sparkles size={18} color="var(--primary)" />
               <span>Suggested Queries</span>
             </h4>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: '1.4' }}>
               Click any chip to query the database and trigger the AI context generation engine automatically:
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -265,7 +307,7 @@ export default function ChatPage() {
                     padding: '0.65rem 0.85rem',
                     border: '1px solid var(--border-color)',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: '#f8fafc',
+                    backgroundColor: 'var(--bg-main)',
                     cursor: 'pointer',
                     color: 'var(--text-secondary)',
                     transition: 'all 0.15s',
@@ -274,10 +316,10 @@ export default function ChatPage() {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = 'var(--primary-light)';
                     e.currentTarget.style.color = 'var(--primary)';
-                    e.currentTarget.style.borderColor = 'rgba(37, 99, 235, 0.2)';
+                    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                    e.currentTarget.style.backgroundColor = 'var(--bg-main)';
                     e.currentTarget.style.color = 'var(--text-secondary)';
                     e.currentTarget.style.borderColor = 'var(--border-color)';
                   }}
@@ -288,19 +330,6 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <div style={{
-            borderTop: '1px solid var(--border-color)',
-            paddingTop: '1.25rem',
-            marginTop: 'auto'
-          }}>
-            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              <HelpCircle size={16} />
-              <span>Chatbot Scope</span>
-            </h4>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-              In Phase 1, the AI agent is trained exclusively on internal hospital datasets. Queries concerning recipes, code, general trivia, or external matters will return polite out-of-scope notifications.
-            </p>
-          </div>
         </div>
 
       </div>
@@ -317,6 +346,14 @@ export default function ChatPage() {
         @keyframes dotBounce {
           0%, 80%, 100% { transform: scale(0); }
           40% { transform: scale(1); }
+        }
+        @media (max-width: 900px) {
+          .chat-grid-layout {
+            grid-template-columns: 1fr !important;
+          }
+          .chat-suggestions-sidebar {
+            display: none !important;
+          }
         }
       `}</style>
     </div>

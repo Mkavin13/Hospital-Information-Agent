@@ -50,11 +50,7 @@ export default function ContactPage() {
           <div className="spinner" style={{
             width: '40px',
             height: '40px',
-            border: '3px solid var(--border-color)',
-            borderTop: '3px solid var(--primary)',
-            borderRadius: '50%',
-            margin: '0 auto 1rem auto',
-            animation: 'spin 0.8s linear infinite'
+            margin: '0 auto 1rem auto'
           }}></div>
           <p>Retrieving Helpline Data...</p>
         </div>
@@ -94,15 +90,15 @@ export default function ContactPage() {
               const isEmergency = c.phoneType.toLowerCase().includes("emergency");
               return (
                 <div key={c.id} className="card" style={{
-                  borderLeft: isEmergency ? '4px solid #ef4444' : '4px solid var(--primary)',
+                  borderLeft: isEmergency ? '4px solid var(--accent)' : '4px solid var(--primary)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.75rem'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', justifycontent: 'space-between', alignItems: 'center' }}>
                     <h4 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{c.phoneType}</h4>
                     {isEmergency && (
-                      <span className="badge" style={{ backgroundColor: '#fee2e2', color: '#b91c1c', fontSize: '0.7rem' }}>
+                      <span className="badge" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent)', fontSize: '0.7rem' }}>
                         Critical Care
                       </span>
                     )}
@@ -110,19 +106,19 @@ export default function ContactPage() {
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Phone size={16} color={isEmergency ? "#ef4444" : "var(--primary)"} />
+                      <Phone size={16} color={isEmergency ? "var(--accent)" : "var(--primary)"} />
                       <strong style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>{c.phoneNumber}</strong>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Mail size={15} />
+                      <Mail size={15} color="var(--text-muted)" />
                       <span>{c.email}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
-                      <MapPin size={15} style={{ flexShrink: 0, marginTop: '0.2rem' }} />
+                      <MapPin size={15} color="var(--text-muted)" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                       <span>{c.address}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', marginTop: '0.25rem' }}>
-                      <Clock size={15} />
+                      <Clock size={15} color="var(--text-muted)" />
                       <span>Hours: {c.visitingHours}</span>
                     </div>
                   </div>
@@ -137,17 +133,17 @@ export default function ContactPage() {
             
             <div className="card" style={{
               flex: 1,
-              backgroundColor: '#f1f5f9',
+              backgroundColor: 'var(--bg-main)',
               minHeight: '300px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              border: '1px dashed #cbd5e1',
+              border: '1px dashed var(--border-color)',
               padding: '2rem',
               textAlign: 'center',
               gap: '1rem',
-              backgroundImage: 'radial-gradient(#cbd5e1 1.5px, transparent 1.5px)',
+              backgroundImage: 'radial-gradient(var(--border-color) 1.5px, transparent 1.5px)',
               backgroundSize: '24px 24px'
             }}>
               <div style={{
@@ -161,8 +157,8 @@ export default function ContactPage() {
                 <Navigation size={32} color="var(--primary)" />
               </div>
               <div>
-                <h4 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>Interactive Google Map</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '280px' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '0.25rem', color: 'var(--text-primary)' }}>Interactive Google Map</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '280px', lineHeight: '1.5' }}>
                   City Hospital, 100 Medical Plaza Way. Map embedding and routing directions will be finalized in Phase 2.
                 </p>
               </div>
@@ -174,13 +170,6 @@ export default function ContactPage() {
 
         </div>
       )}
-
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

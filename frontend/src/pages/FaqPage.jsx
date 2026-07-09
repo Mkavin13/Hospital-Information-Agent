@@ -98,16 +98,17 @@ export default function FaqPage() {
                 key={idx}
                 onClick={() => setSelectedCategory(c)}
                 style={{
-                  padding: '0.5rem 1rem',
+                  padding: '0.5rem 1.25rem',
                   fontSize: '0.85rem',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   borderRadius: '20px',
                   border: selectedCategory === c ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                  backgroundColor: selectedCategory === c ? 'var(--primary)' : '#ffffff',
+                  backgroundColor: selectedCategory === c ? 'var(--primary)' : 'var(--card-bg)',
                   color: selectedCategory === c ? '#ffffff' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'all var(--transition-fast)'
                 }}
+                className="category-chip"
               >
                 {c}
               </button>
@@ -122,11 +123,7 @@ export default function FaqPage() {
           <div className="spinner" style={{
             width: '40px',
             height: '40px',
-            border: '3px solid var(--border-color)',
-            borderTop: '3px solid var(--primary)',
-            borderRadius: '50%',
-            margin: '0 auto 1rem auto',
-            animation: 'spin 0.8s linear infinite'
+            margin: '0 auto 1rem auto'
           }}></div>
           <p>Scanning FAQ Registry...</p>
         </div>
@@ -164,13 +161,6 @@ export default function FaqPage() {
           )}
         </div>
       )}
-
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

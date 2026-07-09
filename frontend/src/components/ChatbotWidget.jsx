@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, HeartPulse, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, HeartPulse, Sparkles, Bot, User } from 'lucide-react';
 import { sendChatMessage } from '../services/api';
 
 export default function ChatbotWidget() {
@@ -77,7 +77,7 @@ export default function ChatbotWidget() {
             backgroundColor: 'var(--primary)',
             color: '#ffffff',
             border: 'none',
-            boxShadow: '0 8px 30px rgba(37, 99, 235, 0.4)',
+            boxShadow: '0 8px 30px rgba(59, 130, 246, 0.4)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -96,7 +96,7 @@ export default function ChatbotWidget() {
         <div style={{
           width: '380px',
           height: '520px',
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--card-bg)',
           borderRadius: 'var(--radius-lg)',
           boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
           border: '1px solid var(--border-color)',
@@ -107,7 +107,7 @@ export default function ChatbotWidget() {
         }}>
           {/* Header */}
           <div style={{
-            backgroundColor: 'var(--primary)',
+            background: 'var(--grad-primary)',
             color: '#ffffff',
             padding: '1rem 1.25rem',
             display: 'flex',
@@ -147,40 +147,87 @@ export default function ChatbotWidget() {
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#f8fafc'
+            backgroundColor: 'var(--bg-main)'
           }}>
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={msg.isBot ? "chat-bubble chat-bubble-bot" : "chat-bubble chat-bubble-user"}
                 style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.5rem',
                   alignSelf: msg.isBot ? 'flex-start' : 'flex-end',
-                  position: 'relative'
+                  flexDirection: msg.isBot ? 'row' : 'row-reverse',
+                  marginBottom: '1rem',
+                  maxWidth: '85%'
                 }}
               >
-                <div>{msg.text}</div>
-                {msg.isBot && msg.source && (
-                  <span style={{
-                    display: 'block',
-                    fontSize: '0.65rem',
-                    color: 'var(--text-muted)',
-                    textAlign: 'right',
-                    marginTop: '0.25rem',
-                    fontWeight: 500
-                  }}>
-                    Source: {msg.source}
-                  </span>
-                )}
+                {/* Mini Avatar */}
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: msg.isBot ? 'var(--primary-light)' : 'var(--primary)',
+                  color: msg.isBot ? 'var(--primary)' : 'var(--text-white)',
+                  border: '1px solid var(--border-color)',
+                  flexShrink: 0
+                }}>
+                  {msg.isBot ? <Bot size={14} /> : <User size={14} />}
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: msg.isBot ? 'flex-start' : 'flex-end' }}>
+                  <div
+                    className={msg.isBot ? "chat-bubble chat-bubble-bot" : "chat-bubble chat-bubble-user"}
+                    style={{
+                      margin: 0,
+                      padding: '0.65rem 0.95rem',
+                      fontSize: '0.88rem'
+                    }}
+                  >
+                    <div>{msg.text}</div>
+                    {msg.isBot && msg.source && (
+                      <span style={{
+                        display: 'block',
+                        fontSize: '0.65rem',
+                        color: 'var(--text-muted)',
+                        textAlign: 'right',
+                        marginTop: '0.25rem',
+                        fontWeight: 600
+                      }}>
+                        Source: {msg.source}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
             
             {/* Loading Indicator */}
             {isLoading && (
-              <div className="chat-bubble chat-bubble-bot" style={{ alignSelf: 'flex-start', padding: '0.75rem 1rem' }}>
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center', height: '14px' }}>
-                  <span className="dot" style={{ animationDelay: '0s' }}></span>
-                  <span className="dot" style={{ animationDelay: '0.2s' }}></span>
-                  <span className="dot" style={{ animationDelay: '0.4s' }}></span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', alignSelf: 'flex-start', marginBottom: '1rem' }}>
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'var(--primary-light)',
+                  color: 'var(--primary)',
+                  border: '1px solid var(--border-color)',
+                  flexShrink: 0
+                }}>
+                  <Bot size={14} />
+                </div>
+                <div className="chat-bubble chat-bubble-bot" style={{ margin: 0, padding: '0.65rem 0.95rem' }}>
+                  <div style={{ display: 'flex', gap: '4px', alignItems: 'center', height: '14px' }}>
+                    <span className="dot" style={{ animationDelay: '0s' }}></span>
+                    <span className="dot" style={{ animationDelay: '0.2s' }}></span>
+                    <span className="dot" style={{ animationDelay: '0.4s' }}></span>
+                  </div>
                 </div>
               </div>
             )}
@@ -189,7 +236,7 @@ export default function ChatbotWidget() {
 
           {/* Quick suggestions if user is starting */}
           {messages.length === 1 && (
-            <div style={{ padding: '0.75rem 1rem', borderTop: '1px solid var(--border-color)', backgroundColor: '#ffffff' }}>
+            <div style={{ padding: '0.75rem 1rem', borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
                 <Sparkles size={12} color="var(--primary)" />
                 <span>Suggested Queries:</span>
@@ -204,7 +251,7 @@ export default function ChatbotWidget() {
                       padding: '0.35rem 0.65rem',
                       border: '1px solid var(--border-color)',
                       borderRadius: '16px',
-                      backgroundColor: '#f1f5f9',
+                      backgroundColor: 'var(--bg-main)',
                       cursor: 'pointer',
                       color: 'var(--text-secondary)',
                       transition: 'all 0.15s'
@@ -215,7 +262,7 @@ export default function ChatbotWidget() {
                       e.currentTarget.style.borderColor = 'var(--primary)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f1f5f9';
+                      e.currentTarget.style.backgroundColor = 'var(--bg-main)';
                       e.currentTarget.style.color = 'var(--text-secondary)';
                       e.currentTarget.style.borderColor = 'var(--border-color)';
                     }}
@@ -231,7 +278,7 @@ export default function ChatbotWidget() {
           <div style={{
             padding: '0.85rem 1rem',
             borderTop: '1px solid var(--border-color)',
-            backgroundColor: '#ffffff',
+            backgroundColor: 'var(--bg-surface)',
             display: 'flex',
             gap: '0.5rem',
             alignItems: 'center'
@@ -248,8 +295,7 @@ export default function ChatbotWidget() {
                 flex: 1,
                 borderRadius: '20px',
                 padding: '0.5rem 1rem',
-                fontSize: '0.9rem',
-                border: '1px solid var(--border-color)'
+                fontSize: '0.9rem'
               }}
             />
             <button

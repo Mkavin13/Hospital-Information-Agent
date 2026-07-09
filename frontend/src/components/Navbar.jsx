@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { HeartPulse, Sparkles } from 'lucide-react';
+import { HeartPulse, Sparkles, Sun, Moon } from 'lucide-react';
 
 export default function Navbar() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
   return (
     <nav style={{
-      backgroundColor: 'rgba(255, 255, 255, 0.85)',
+      backgroundColor: 'var(--glass-bg)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
-      borderBottom: '1px solid rgba(226, 232, 240, 0.6)',
+      borderBottom: '1px solid var(--glass-border)',
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      boxShadow: '0 4px 30px rgba(0, 0, 0, 0.02)'
+      boxShadow: '0 4px 30px rgba(0, 0, 0, 0.02)',
+      transition: 'background-color var(--transition-normal), border-color var(--transition-normal)'
     }}>
-      <div className="container" style={{
+      <div className="container nav-container" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -41,13 +57,13 @@ export default function Navbar() {
           }}>
             <HeartPulse size={24} color="#ffffff" />
           </div>
-          <div>
+          <div className="brand-logo-text">
             <h1 style={{ 
               fontSize: '1.35rem', 
               fontWeight: 800, 
               fontFamily: 'var(--font-heading)',
               letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #1e293b 30%, #3b82f6 100%)',
+              background: 'linear-gradient(135deg, var(--text-primary) 30%, var(--primary) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>City Hospital</h1>
@@ -55,8 +71,8 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Links */}
-        <div className="nav-links-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '2.25rem' }}>
+        {/* Links & Actions */}
+        <div className="nav-links-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }}>
           <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Dashboard
           </NavLink>
@@ -73,6 +89,31 @@ export default function Navbar() {
             Contact
           </NavLink>
 
+          {/* Dark Mode Toggle */}
+          <button 
+            onClick={toggleTheme}
+            style={{
+              background: 'none',
+              border: '1px solid var(--border-color)',
+              color: 'var(--text-secondary)',
+              cursor: 'pointer',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all var(--transition-fast)',
+              backgroundColor: 'var(--bg-surface)',
+              flexShrink: 0
+            }}
+            className="btn-theme-toggle"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+
+          {/* Dedicated Chat Link Button */}
           <Link to="/chat" className="btn btn-ai animate-glow" style={{ 
             borderRadius: '24px', 
             padding: '0.65rem 1.35rem',
@@ -85,10 +126,11 @@ export default function Navbar() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            transition: 'all 0.25s ease'
+            transition: 'all 0.25s ease',
+            flexShrink: 0
           }}>
             <Sparkles size={16} />
-            <span>Ask AI Assistant</span>
+            <span className="nav-ai-text">Ask AI</span>
           </Link>
         </div>
       </div>
@@ -105,6 +147,7 @@ export default function Navbar() {
           transition: all var(--transition-fast);
           position: relative;
           padding: 0.5rem 0;
+          flex-shrink: 0;
         }
         .nav-link:hover {
           color: var(--primary);
@@ -121,12 +164,72 @@ export default function Navbar() {
           height: 2.5px;
           background: var(--grad-primary);
           border-radius: 2px;
-          box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+          box-shadow: var(--shadow-glow);
         }
         .btn-ai:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
-          background: var(--primary-hover) !important;
+          opacity: 0.95;
+        }
+        .btn-theme-toggle:hover {
+          border-color: var(--primary);
+          color: var(--primary);
+          box-shadow: var(--shadow-sm);
+          transform: scale(1.05);
+        }
+        
+        /* Mobile Responsiveness Improvements */
+        @media (max-width: 1024px) {
+          .nav-container {
+            padding: 0 1.25rem !important;
+          }
+          .nav-links-wrapper {
+            gap: 1.25rem !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .nav-links-wrapper {
+            gap: 1rem !important;
+          }
+          .nav-link {
+            font-size: 0.85rem !important;
+          }
+        }
+        @media (max-width: 680px) {
+          .brand-logo-text p {
+            display: none !important;
+          }
+          .nav-links-wrapper {
+            gap: 0.75rem !important;
+          }
+          .nav-link {
+            font-size: 0.8rem !important;
+          }
+          .btn-ai {
+            padding: 0.5rem 1rem !important;
+            font-size: 0.8rem !important;
+          }
+        }
+        @media (max-width: 580px) {
+          .nav-ai-text {
+            display: none !important;
+          }
+          .btn-ai {
+            padding: 0.6rem !important;
+            border-radius: 50% !important;
+          }
+          .nav-links-wrapper {
+            gap: 0.5rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .brand-logo-text {
+            display: none !important;
+          }
+          .nav-links-wrapper {
+            width: 100%;
+            justify-content: space-between;
+          }
         }
       `}</style>
     </nav>
